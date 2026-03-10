@@ -2,6 +2,7 @@
 var hamburgerIcon = document.getElementById("hamburgerIcon");
 var navItems = document.getElementById("navItems");
 var header = document.querySelector(".mainHeader");
+var coverDiv = document.querySelector(".coverDiv");
 var hamburgerControl = false;
 
 function showMenu() {
@@ -27,13 +28,25 @@ navLinks.forEach(function(link) {
 });
 
 // Glass Header effect on scroll
-window.addEventListener("scroll", () => {
-   if (window.scrollY > 50) {
+function updateHeaderTheme() {
+   if (!header) return;
+
+   var threshold = 50;
+   if (coverDiv) {
+      var headerHeight = header.offsetHeight || 0;
+      threshold = Math.max(0, coverDiv.offsetHeight - headerHeight);
+   }
+
+   if (window.scrollY >= threshold) {
       header.classList.add("glass");
    } else {
       header.classList.remove("glass");
    }
-});
+}
+
+window.addEventListener("scroll", updateHeaderTheme);
+window.addEventListener("resize", updateHeaderTheme);
+updateHeaderTheme();
 
 // Reveal About Section logic
 const aboutBox = document.querySelector(".reveal-box");
@@ -65,4 +78,3 @@ if (typeof Lenis !== 'undefined') {
    }
    requestAnimationFrame(raf);
 }
-
